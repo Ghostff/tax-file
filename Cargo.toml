@@ -1,0 +1,36 @@
+[package]
+name = "tax-api"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "tax-api"
+path = "src/main.rs"
+
+[dependencies]
+actix-web = "4.11.0"
+rust_decimal = "1.40"
+sqlx = { version = "0.8.6", features = ["runtime-tokio", "tls-native-tls", "postgres", "uuid", "chrono", "runtime-async-std-native-tls", "rust_decimal"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+validator = { version = "0.20.0", features = ["derive"] }
+actix-web-validator = "7.0.0"
+num_cpus = "1.17.0"
+tracing = "0.1.41"
+actix-cors = "0.7.1"
+tracing-actix-web = "0.7.19"
+tracing-subscriber = { version = "0.3.20", features = ["env-filter", "fmt", "json", "time"] }
+actix-extensible-rate-limit = { version = "0.4.0", features = ["dashmap"] }
+reqwest = { version = "0.12.24", features = ["json", "gzip", "brotli"] }
+uuid = { version = "1.18.1", features = ["serde", "v4", "v5"] }
+argon2 = "0.5.3"
+jsonwebtoken = {version = "10", default-features = false, features = ["rust_crypto"] }
+futures = "0.3.31"
+erased-serde = "0.4.9"
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

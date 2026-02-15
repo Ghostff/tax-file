@@ -1,0 +1,42 @@
+services:
+  app-db:
+    image: postgres:18-alpine
+    container_name: tax-db
+    environment:
+      POSTGRES_DB: "${DB_NAME:-tax_file_db}"
+      POSTGRES_USER: "${DB_USERNAME:-user}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD:-password}"
+      POSTGRES_INIT_ARGS: "${DB_INIT_ARGS}"
+    ports:
+      - "${DB_PORT:-5432}:${DB_PORT:-5432}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USERNAME} -d $${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app-api:
+    container_name: tax-file-api
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    env_file:
+      - ./.env
+    ports:
+      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
+    depends_on:
+      app-db:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - ./:/app:cached
+      - ./target:/usr/src/app/target
+
+volumes:
+  postgres_data:
+    driver: local

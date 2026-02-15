@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165755_create_countries_table.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165755_create_countries_table.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165845_create_states_table.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165845_create_states_table.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165847_create_addresses_table.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20250203165847_create_addresses_table.up.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20251016175919_create_users_table.down.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/src/migrations/20251016175919_create_users_table.up.sql" dialect="GenericSQL" />
+  </component>
+</project>
