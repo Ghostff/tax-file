@@ -1,9 +1,0 @@
-{
-  "_hash": "I9PXGBTbbrT52d2moK6lSv5BmHzLRgSGFxCQfNopBQs",
-  "project": {
-    "rootDir": "/var/www/Projects/tax-file/frontend"
-  },
-  "versions": {
-    "nuxt": "3.21.1"
-  }
-}
