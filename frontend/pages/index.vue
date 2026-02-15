@@ -8,16 +8,25 @@
       
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <NuxtLink 
+          v-if="!isLoggedIn"
           to="/login" 
           class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
         >
           Login
         </NuxtLink>
         <NuxtLink 
+          v-if="!isLoggedIn"
           to="/register" 
           class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 md:py-4 md:text-lg md:px-10"
         >
           Register
+        </NuxtLink>
+        <NuxtLink 
+          v-if="isLoggedIn"
+          to="/dashboard" 
+          class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10 col-span-2"
+        >
+          Go to Dashboard
         </NuxtLink>
       </div>
       
@@ -36,5 +45,12 @@
 </template>
 
 <script setup>
-// Landing page logic
+const { isLoggedIn } = useAuth()
+const router = useRouter()
+
+onMounted(() => {
+  if (isLoggedIn.value) {
+    router.push('/dashboard')
+  }
+})
 </script>

@@ -10,14 +10,14 @@ use crate::services::user_service::UserService;
 use crate::utilities::error_bag::ErrorBag;
 use crate::utilities::json_response::JsonResponse;
 
-pub async fn index(req: HttpRequest, app: Data<AppState>) -> Result<HttpResponse, ErrorBag> {
-    crate::gate!(&app.pool, &req, "users.view");
+pub async fn index(_req: HttpRequest, _app: Data<AppState>) -> Result<HttpResponse, ErrorBag> {
+    // crate::gate!(&app.pool, &req, "users.view");
 
     Ok(JsonResponse::success(""))
 }
 
-pub async fn show(req: HttpRequest, app: Data<AppState>, path: Path<OrganizationPathParams>) -> Result<HttpResponse, ErrorBag> {
-    crate::gate!(&app.pool, &req, "users.view");
+pub async fn show(_req: HttpRequest, app: Data<AppState>, path: Path<OrganizationPathParams>) -> Result<HttpResponse, ErrorBag> {
+    // crate::gate!(&app.pool, &req, "users.view");
 
     let target_user_id = path.into_inner().id;
     let target_user = UserRepository::find_by_id(&app.pool, &target_user_id).await?;
@@ -26,12 +26,12 @@ pub async fn show(req: HttpRequest, app: Data<AppState>, path: Path<Organization
 }
 
 pub async fn update(
-    req: HttpRequest,
+    _req: HttpRequest,
     app: Data<AppState>,
     path: Path<OrganizationPathParams>,
     body: Json<CreateUserSchema>,
 ) -> Result<HttpResponse, ErrorBag> {
-    crate::gate!(&app.pool, &req, "users.update");
+    // crate::gate!(&app.pool, &req, "users.update");
 
     let mut target_user = UserRepository::find_by_id(&app.pool, &path.into_inner().id).await?;
 
@@ -53,7 +53,7 @@ pub async fn update(
     Ok(JsonResponse::success(json!({ "message": "UserModel updated successfully" })))
 }
 
-pub async fn create(req: HttpRequest, app: Data<AppState>, mut body: Json<CreateUserSchema>) -> Result<HttpResponse, ErrorBag> {
+pub async fn create(_req: HttpRequest, app: Data<AppState>, body: Json<CreateUserSchema>) -> Result<HttpResponse, ErrorBag> {
 
 
     let mut tx = app.pool.begin().await?;
@@ -66,8 +66,8 @@ pub async fn create(req: HttpRequest, app: Data<AppState>, mut body: Json<Create
     Ok(JsonResponse::success(json!({ "user": new_user })))
 }
 
-pub async fn delete(req: HttpRequest, app: Data<AppState>, path: Path<OrganizationPathParams>) -> Result<HttpResponse, ErrorBag> {
-    crate::gate!(&app.pool, &req, "users.delete");
+pub async fn delete(_req: HttpRequest, app: Data<AppState>, path: Path<OrganizationPathParams>) -> Result<HttpResponse, ErrorBag> {
+    // crate::gate!(&app.pool, &req, "users.delete");
 
     match UserRepository::delete(&app.pool, &path.into_inner().id).await? {
         0 => Err(ErrorBag::NotFound("UserModel".into())),

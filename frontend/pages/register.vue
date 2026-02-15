@@ -131,7 +131,7 @@ const handleRegister = async () => {
   })
   
   if (result.success) {
-    router.push('/')
+    router.push('/dashboard')
   } else {
     error.value = result.message
   }

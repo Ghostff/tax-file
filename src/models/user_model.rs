@@ -46,6 +46,18 @@ pub struct CreateUserSchema {
     pub password: Option<String>,
 }
 
+#[derive(Debug, Deserialize, Validate)]
+pub struct UpdateProfileSchema {
+    #[validate(length(min = 1, max = 100, message = "First name must be between 1 to 100"))]
+    pub first_name: String,
+    #[validate(length(min = 1, max = 100, message = "Last name must be between 1 to 100"))]
+    pub last_name: String,
+    #[validate(length(min = 4, max = 250, message = "Email must be between 4 to 250"))]
+    #[validate(email(code = "code_str", message = "Invalid email address"))]
+    pub email: String,
+    pub password: Option<String>,
+}
+
 /// UserModel domain model reflecting the `users` table.
 ///
 /// This struct is used for fetching rows via SQLx and serializing back to clients.

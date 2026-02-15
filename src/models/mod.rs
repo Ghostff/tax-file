@@ -3,6 +3,7 @@ use erased_serde::serialize_trait_object;
 
 pub mod user_model;
 pub mod address_model;
+pub mod tax_model;
 mod macros;
 
 pub trait Model: erased_serde::Serialize + Any + Sync + Send {

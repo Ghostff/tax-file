@@ -4,7 +4,7 @@ use actix_web_validator::Json;
 use chrono::Utc;
 use serde_json::{json, to_value, Map, Value};
 use crate::AppState;
-use crate::models::user_model::{LoginUserSchema, UserModel};
+use crate::models::user_model::{LoginUserSchema, UserModel, UpdateProfileSchema};
 use crate::repositories::user_repository::UserRepository;
 use crate::services::crypto_service::CryptoService;
 use crate::services::jwt_service::JwtService;
@@ -69,6 +69,39 @@ pub async fn login(body: Json<LoginUserSchema>, app: Data<AppState>) -> Result<H
     response.insert("token".to_string(), to_value(token).unwrap_or_default());
 
     Ok(JsonResponse::success(json!(response)))
+}
+
+pub async fn update_profile(req: HttpRequest, body: Json<UpdateProfileSchema>, app: Data<AppState>) -> Result<HttpResponse, ErrorBag> {
+    let mut current_user = (*req.get_user()).clone();
+    let email = body.email.trim().to_lowercase();
+
+    if current_user.email != email && UserRepository::email_exist(&app.pool, &email).await? {
+        return Err(ErrorBag::EmailInUse);
+    }
+
+    current_user.first_name = body.first_name.clone();
+    current_user.last_name = body.last_name.clone();
+    current_user.email = email;
+
+    if let Some(password) = &body.password {
+        if !password.trim().is_empty() {
+            let crypto = CryptoService::new();
+            current_user.password = crypto.hash_password(password)
+                .map_err(|e| ErrorBag::InternalServerError(format!("update_profile.hash_password failed: {:?}", e)))?;
+        }
+    }
+
+    UserRepository::update(&app.pool, &current_user).await?;
+
+    Ok(JsonResponse::success(json!({ "user": current_user, "message": "Profile updated successfully" })))
+}
+
+pub async fn delete_account(req: HttpRequest, app: Data<AppState>) -> Result<HttpResponse, ErrorBag> {
+    let current_user = req.get_user();
+    
+    UserRepository::delete(&app.pool, &current_user.id).await?;
+
+    Ok(JsonResponse::success(json!({ "message": "Account deleted successfully" })))
 }
 
 /// Registration flow:

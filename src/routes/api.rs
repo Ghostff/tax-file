@@ -1,11 +1,22 @@
 use actix_web::web;
 use actix_web::web::{ServiceConfig};
-use crate::controllers::api::{api_auth_controller, default_controller, user_controller};
+use crate::controllers::api::{api_auth_controller, default_controller, user_controller, tax_controller};
 use crate::middlewares::auth_middleware::AuthMiddleware;
 
 fn authenticated(cfg: &mut ServiceConfig) {
     cfg
         .route("/auth/me", get!(api_auth_controller::me))
+        .route("/auth/profile", put!(api_auth_controller::update_profile))
+        .route("/auth/delete-account", delete!(api_auth_controller::delete_account))
+        .service(
+            web::scope("/tax")
+                .route("/documents", get!(tax_controller::list_documents))
+                .route("/upload", post!(tax_controller::upload_document))
+                .route("/data", post!(tax_controller::save_manual_data))
+                .route("/data", get!(tax_controller::get_tax_data))
+                .route("/ai-helper", post!(tax_controller::ai_helper))
+                .route("/download/{id}", get!(tax_controller::download_document))
+        )
         .service(
             web::scope("/users")
                 .route("", get!(user_controller::index))

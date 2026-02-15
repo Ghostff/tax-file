@@ -1,0 +1,173 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            WITH country AS ( SELECT id FROM countries WHERE iso3_code = $5 OR iso2_code = $5 LIMIT 1),\n            state AS (SELECT s.id FROM states s JOIN country c ON s.country_id = c.id WHERE s.code = $6 LIMIT 1)\n            INSERT INTO addresses (\n                address_raw,\n                street_address,\n                latitude,\n                longitude,\n                country_id,\n                state_id,\n                locality,\n                zip\n            )\n            SELECT\n                $1,\n                $2,\n                $3,\n                $4,\n                c.id,\n                st.id,\n                $7,\n                $8\n            FROM country c\n            LEFT JOIN state st ON TRUE\n            ON CONFLICT (address_raw, locality, zip, country_id)\n            WHERE deleted_at IS NULL\n            DO UPDATE SET address_raw = EXCLUDED.address_raw\n            RETURNING *\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "address_raw",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "street_address",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "latitude",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 4,
+        "name": "longitude",
+        "type_info": "Numeric"
+      },
+      {
+        "ordinal": 5,
+        "name": "route_number",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "route_prefix",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 7,
+        "name": "route",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 8,
+        "name": "route_type",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 9,
+        "name": "route_suffix",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 10,
+        "name": "unit_type",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 11,
+        "name": "unit_number",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 12,
+        "name": "intersection",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 13,
+        "name": "country_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 14,
+        "name": "state_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 15,
+        "name": "county",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 16,
+        "name": "locality",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 17,
+        "name": "sublocality",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 18,
+        "name": "subdivision",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 19,
+        "name": "neighborhood",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 20,
+        "name": "school_district",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 21,
+        "name": "zip",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 22,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 23,
+        "name": "updated_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 24,
+        "name": "deleted_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Numeric",
+        "Numeric",
+        "Bpchar",
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "hash": "810b428f1f3c67291a834d28e3d57ed18c9d3e16cbe0b1a5ae7cb10b1b27318b"
+}

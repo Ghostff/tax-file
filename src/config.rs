@@ -8,6 +8,7 @@ pub struct Config {
     pub cpu_count: usize,
     pub database_url: String,
     pub app_secret: String,
+    pub ollama_url: String,
 }
 
 pub static ENV: LazyLock<Config> = LazyLock::new(|| {
@@ -31,6 +32,7 @@ pub static ENV: LazyLock<Config> = LazyLock::new(|| {
         eprintln!("ERROR: APP_SECRET must be set");
         std::process::exit(1);
     });
+    let ollama_url = env::var("OLLAMA_URL").unwrap_or("http://localhost:11434".to_string());
 
     Config {
         app_url,
@@ -38,5 +40,6 @@ pub static ENV: LazyLock<Config> = LazyLock::new(|| {
         cpu_count,
         database_url,
         app_secret,
+        ollama_url,
     }
 });

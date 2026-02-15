@@ -91,7 +91,7 @@ const handleLogin = async () => {
   const result = await login(form.email, form.password)
   
   if (result.success) {
-    router.push('/')
+    router.push('/dashboard')
   } else {
     error.value = result.message
   }

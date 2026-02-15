@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    UPDATE users\n                    SET\n                        first_name = $2,\n                        last_name = $3,\n                        email = LOWER($4),\n                        phone = $5,\n                        password = $6,\n                        password_reset_token = $7,\n                        verification_token = $8,\n                        last_logged_in_at = $9,\n                        current_logged_in_at = $10,\n                        updated_at = NOW(),\n                        deleted_at = $11\n                    WHERE id = $1\n                    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Varchar",
+        "Varchar",
+        "Text",
+        "Varchar",
+        "Varchar",
+        "Varchar",
+        "Uuid",
+        "Timestamptz",
+        "Timestamptz",
+        "Timestamptz"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "66f36c016fd62a4dbc7228ec2f5330f58aa7a0612c911c81fc5f6a2bcbc10720"
+}
